@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test PHI Message with Patient Names</title>
+</head>
+<body>
+    <h1>Test PHI Message with Patient Names</h1>
+    <p>Let's test creating a PHI message with patient names to trigger the audit log system.</p>
+
+    <script>
+        // Test WebSocket PHI message creation
+        function createPHIMessageWithPatientNames() {
+            const ws = new WebSocket('ws://localhost:5000');
+            
+            ws.onopen = function() {
+                console.log('WebSocket connected');
+                
+                // Send authentication
+                ws.send(JSON.stringify({
+                    type: 'authenticate',
+                    token: 'health-mod-001' // Using health moderator
+                }));
+                
+                setTimeout(() => {
+                    // Send PHI message with patient names
+                    const phiMessage = {
+                        type: 'message',
+                        conversationId: '8670cca4-5bee-4f72-9572-8d0248cd66c6', // Healthcare Inc chat
+                        content: 'Test PHI message with patient John Doe',
+                        messageType: 'secure',
+                        phiTypes: ['patient_name', 'insurance_card'],
+                        phiDescription: 'Test message containing patient information',
+                        patientFirstName: 'John',
+                        patientLastName: 'Doe'
+                    };
+                    
+                    console.log('Sending PHI message:', phiMessage);
+                    ws.send(JSON.stringify(phiMessage));
+                }, 1000);
+            };
+            
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                console.log('WebSocket response:', data);
+            };
+            
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+        }
+        
+        // Auto-run the test
+        createPHIMessageWithPatientNames();
+    </script>
+</body>
+</html>
+</body>
+</html>

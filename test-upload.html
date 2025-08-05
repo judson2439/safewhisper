@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload Test</title>
+</head>
+<body>
+    <h1>File Upload Test</h1>
+    <input type="file" id="fileInput" accept="image/*">
+    <button onclick="uploadFile()">Upload</button>
+    <div id="result"></div>
+    
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) {
+                document.getElementById('result').innerHTML = 'No file selected';
+                return;
+            }
+            
+            console.log('File selected:', file.name, file.size, file.type);
+            
+            try {
+                // Get upload URL
+                const response = await fetch('/api/attachments/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        fileName: file.name,
+                        contentType: file.type,
+                        size: file.size
+                    })
+                });
+                
+                console.log('Upload URL response:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Failed to get upload URL:', errorText);
+                    document.getElementById('result').innerHTML = `Error: ${response.status} - ${errorText}`;
+                    return;
+                }
+                
+                const { uploadURL } = await response.json();
+                console.log('Got upload URL:', uploadURL);
+                
+                // Upload file to storage
+                const uploadResponse = await fetch(uploadURL, {
+                    method: 'PUT',
+                    body: file,
+                    headers: { 'Content-Type': file.type }
+                });
+                
+                console.log('Upload response:', uploadResponse.status, uploadResponse.statusText);
+                
+                if (uploadResponse.ok) {
+                    const finalURL = uploadURL.split('?')[0];
+                    document.getElementById('result').innerHTML = `
+                        <p>Upload successful!</p>
+                        <p>File: ${file.name}</p>
+                        <p>URL: ${finalURL}</p>
+                        <img src="${finalURL}" style="max-width: 200px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <p style="display:none;">Image failed to load (likely needs authentication)</p>
+                    `;
+                } else {
+                    const errorText = await uploadResponse.text();
+                    console.error('Upload failed:', errorText);
+                    document.getElementById('result').innerHTML = `Upload failed: ${uploadResponse.status} - ${errorText}`;
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                document.getElementById('result').innerHTML = `Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

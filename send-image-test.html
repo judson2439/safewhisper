@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Image to Healthcare Inc Group</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .step { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background: #d4edda; }
+        .error { background: #f8d7da; }
+        button { padding: 10px 20px; margin: 5px; }
+        .result { margin-top: 10px; padding: 10px; background: #f8f9fa; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Send Image to Healthcare Inc Test Group</h1>
+        
+        <div class="step" id="authStep">
+            <h3>Step 1: Authenticate</h3>
+            <button onclick="authenticate()">Login as testmod2</button>
+            <div class="result" id="authResult">Ready to authenticate...</div>
+        </div>
+        
+        <div class="step" id="uploadStep">
+            <h3>Step 2: Upload Image</h3>
+            <input type="file" id="fileInput" accept="image/*">
+            <button onclick="uploadImage()">Upload Selected Image</button>
+            <div class="result" id="uploadResult">Select an image to upload...</div>
+        </div>
+        
+        <div class="step" id="sendStep">
+            <h3>Step 3: Send to Healthcare Inc Group</h3>
+            <input type="text" id="messageText" placeholder="Message" value="Sending test image to Healthcare Inc group">
+            <button onclick="sendToHealthcareGroup()">Send to Healthcare Inc Group</button>
+            <div class="result" id="sendResult">Upload image first...</div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let uploadedAttachment = null;
+        let healthcareConversationId = null;
+
+        async function authenticate() {
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ 
+                        username: 'testmod2', 
+                        password: 'demo123' 
+                    })
+                });
+
+                if (response.ok) {
+                    const userResponse = await fetch('/api/auth/user', {
+                        credentials: 'include'
+                    });
+                    
+                    if (userResponse.ok) {
+                        currentUser = await userResponse.json();
+                        document.getElementById('authResult').textContent = 
+                            `✅ Authenticated as ${currentUser.username}`;
+                        document.getElementById('authStep').classList.add('success');
+                        
+                        // Find Healthcare Inc conversation
+                        await findHealthcareConversation();
+                    }
+                } else {
+                    throw new Error('Authentication failed');
+                }
+            } catch (error) {
+                document.getElementById('authResult').textContent = `❌ Error: ${error.message}`;
+                document.getElementById('authStep').classList.add('error');
+            }
+        }
+
+        async function findHealthcareConversation() {
+            try {
+                const response = await fetch('/api/conversations', {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const conversations = await response.json();
+                    console.log('All conversations:', conversations);
+                    
+                    // Look for Healthcare Inc group
+                    const healthcareConv = conversations.find(conv => 
+                        conv.name && (
+                            conv.name.toLowerCase().includes('healthcare') ||
+                            conv.name.toLowerCase().includes('health')
+                        )
+                    );
+                    
+                    if (healthcareConv) {
+                        healthcareConversationId = healthcareConv.id;
+                        document.getElementById('authResult').textContent += 
+                            `\n✅ Found Healthcare conversation: ${healthcareConv.name}`;
+                    } else {
+                        document.getElementById('authResult').textContent += 
+                            `\n⚠️ Healthcare conversation not found. Available: ${conversations.map(c => c.name).join(', ')}`;
+                        // Use first conversation as fallback
+                        if (conversations.length > 0) {
+                            healthcareConversationId = conversations[0].id;
+                            document.getElementById('authResult').textContent += 
+                                `\nUsing: ${conversations[0].name}`;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error finding conversations:', error);
+            }
+        }
+
+        async function uploadImage() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                document.getElementById('uploadResult').textContent = 'No file selected';
+                return;
+            }
+            
+            if (!currentUser) {
+                document.getElementById('uploadResult').textContent = 'Please authenticate first';
+                return;
+            }
+            
+            try {
+                document.getElementById('uploadResult').textContent = `Uploading ${file.name}...`;
+                
+                // Get upload URL
+                const response = await fetch('/api/attachments/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        fileName: file.name,
+                        contentType: file.type,
+                        size: file.size
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Upload failed: ${await response.text()}`);
+                }
+                
+                const { uploadURL } = await response.json();
+                
+                // Upload to storage
+                const uploadResponse = await fetch(uploadURL, {
+                    method: 'PUT',
+                    body: file,
+                    headers: { 'Content-Type': file.type }
+                });
+                
+                if (uploadResponse.ok) {
+                    uploadedAttachment = {
+                        id: `file-${Date.now()}`,
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        url: uploadURL.split('?')[0],
+                        uploadedAt: new Date()
+                    };
+                    
+                    document.getElementById('uploadResult').textContent = 
+                        `✅ Image uploaded successfully!\nFile: ${file.name}\nSize: ${file.size} bytes`;
+                    document.getElementById('uploadStep').classList.add('success');
+                } else {
+                    throw new Error('Storage upload failed');
+                }
+            } catch (error) {
+                document.getElementById('uploadResult').textContent = `❌ Error: ${error.message}`;
+                document.getElementById('uploadStep').classList.add('error');
+            }
+        }
+
+        async function sendToHealthcareGroup() {
+            if (!uploadedAttachment) {
+                document.getElementById('sendResult').textContent = 'Please upload an image first';
+                return;
+            }
+            
+            if (!healthcareConversationId) {
+                document.getElementById('sendResult').textContent = 'No Healthcare conversation found';
+                return;
+            }
+            
+            const messageText = document.getElementById('messageText').value;
+            
+            try {
+                document.getElementById('sendResult').textContent = 'Sending message with image...';
+                
+                const messageData = {
+                    content: messageText,
+                    attachments: [uploadedAttachment]
+                };
+                
+                const response = await fetch(`/api/conversations/${healthcareConversationId}/messages`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(messageData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    document.getElementById('sendResult').textContent = 
+                        `✅ Image sent to Healthcare Inc group successfully!\n` +
+                        `Message ID: ${result.id}\n` +
+                        `Content: "${messageText}"\n` +
+                        `Image: ${uploadedAttachment.name}`;
+                    document.getElementById('sendStep').classList.add('success');
+                } else {
+                    throw new Error(`Send failed: ${await response.text()}`);
+                }
+            } catch (error) {
+                document.getElementById('sendResult').textContent = `❌ Error: ${error.message}`;
+                document.getElementById('sendStep').classList.add('error');
+            }
+        }
+
+        // Auto-start
+        window.onload = function() {
+            authenticate();
+        };
+    </script>
+</body>
+</html>

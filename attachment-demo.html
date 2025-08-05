@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SKRAM Attachment System - Live Demo</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 1000px; margin: 0 auto; 
+            background: white; border-radius: 12px; padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 { 
+            color: #333; text-align: center; margin-bottom: 30px;
+            font-size: 2.5rem; font-weight: 300;
+        }
+        .demo-section { 
+            margin: 25px 0; padding: 20px; 
+            border: 2px solid #e1e8ed; border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .demo-section h3 { 
+            color: #495057; margin-top: 0; 
+            font-size: 1.3rem; border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+        .success { 
+            background: linear-gradient(135deg, #d4edda, #c3e6cb); 
+            border-color: #28a745; 
+        }
+        .error { 
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb); 
+            border-color: #dc3545; 
+        }
+        .info { 
+            background: linear-gradient(135deg, #d1ecf1, #bee5eb); 
+            border-color: #17a2b8; 
+        }
+        input, button, select { 
+            margin: 8px 4px; padding: 12px 16px; 
+            border: 2px solid #dee2e6; border-radius: 6px;
+            font-size: 14px; transition: all 0.3s ease;
+        }
+        button { 
+            background: linear-gradient(135deg, #007bff, #0056b3); 
+            color: white; cursor: pointer; border: none;
+            font-weight: 500; text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        }
+        button:disabled {
+            background: #6c757d; cursor: not-allowed;
+            transform: none; box-shadow: none;
+        }
+        .result { 
+            margin-top: 15px; padding: 15px; 
+            background: #ffffff; border-radius: 6px;
+            border-left: 4px solid #007bff;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap; font-size: 13px;
+        }
+        .file-info {
+            background: #e9f4ff; padding: 12px; border-radius: 6px;
+            margin: 10px 0; border-left: 4px solid #007bff;
+        }
+        .progress-bar {
+            width: 100%; height: 8px; background: #e9ecef;
+            border-radius: 4px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, #28a745, #20c997);
+            width: 0%; transition: width 0.3s ease;
+        }
+        .status-badge {
+            display: inline-block; padding: 4px 12px;
+            border-radius: 20px; font-size: 12px;
+            font-weight: bold; text-transform: uppercase;
+        }
+        .status-success { background: #28a745; color: white; }
+        .status-error { background: #dc3545; color: white; }
+        .status-pending { background: #ffc107; color: black; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 SKRAM Attachment System - Live Demo</h1>
+        <p style="text-align: center; color: #6c757d; font-size: 1.1rem; margin-bottom: 40px;">
+            Comprehensive demonstration of file upload and attachment functionality
+        </p>
+        
+        <div class="grid">
+            <!-- Authentication Panel -->
+            <div class="demo-section" id="authSection">
+                <h3>🔐 Authentication Status</h3>
+                <input type="text" id="username" placeholder="Username" value="mickey_mouse" style="width: 200px;">
+                <input type="password" id="password" placeholder="Password" value="password123" style="width: 200px;">
+                <br>
+                <button onclick="authenticate()">Login & Test Auth</button>
+                <div class="result" id="authResult">Click Login to authenticate...</div>
+            </div>
+            
+            <!-- File Upload Panel -->
+            <div class="demo-section" id="uploadSection">
+                <h3>📎 File Upload Test</h3>
+                <input type="file" id="fileInput" accept="image/*,application/pdf,.doc,.docx,.txt" multiple>
+                <br>
+                <button onclick="testUpload()" id="uploadBtn" disabled>Upload Selected Files</button>
+                <div class="progress-bar" id="progressBar" style="display: none;">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="result" id="uploadResult">Select files to upload...</div>
+            </div>
+        </div>
+        
+        <!-- Message Sending Panel -->
+        <div class="demo-section" id="messageSection">
+            <h3>💬 Send Message with Attachments</h3>
+            <div style="margin-bottom: 15px;">
+                <input type="text" id="messageContent" placeholder="Type your message..." 
+                       value="Demo message with file attachments" style="width: 400px;">
+                <select id="securityLevel" style="width: 150px;">
+                    <option value="normal">Normal</option>
+                    <option value="confidential">Confidential</option>
+                    <option value="restricted">Restricted</option>
+                    <option value="classified">Classified</option>
+                </select>
+            </div>
+            <button onclick="sendMessageWithAttachments()" id="sendBtn" disabled>Send Message</button>
+            <div class="result" id="messageResult">Upload files first, then send message...</div>
+        </div>
+        
+        <!-- Results Panel -->
+        <div class="demo-section info" id="resultsSection">
+            <h3>📊 Recent Messages & Attachments</h3>
+            <button onclick="loadRecentMessages()">Load Recent Messages</button>
+            <div class="result" id="messagesResult">Click Load Recent Messages to view...</div>
+        </div>
+        
+        <!-- System Status Panel -->
+        <div class="demo-section" id="statusSection">
+            <h3>⚙️ System Status</h3>
+            <div id="systemStatus">
+                <div>Authentication: <span class="status-badge status-pending" id="authStatus">Pending</span></div>
+                <div>Object Storage: <span class="status-badge status-pending" id="storageStatus">Pending</span></div>
+                <div>File Upload: <span class="status-badge status-pending" id="uploadStatus">Pending</span></div>
+                <div>Message System: <span class="status-badge status-pending" id="messageStatus">Pending</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let uploadedAttachments = [];
+        let conversationId = null;
+
+        // Update status badge
+        function updateStatus(elementId, status, text) {
+            const element = document.getElementById(elementId);
+            element.className = `status-badge status-${status}`;
+            element.textContent = text || status.toUpperCase();
+        }
+
+        // Show progress
+        function showProgress(percent) {
+            document.getElementById('progressBar').style.display = 'block';
+            document.getElementById('progressFill').style.width = percent + '%';
+        }
+
+        // Hide progress
+        function hideProgress() {
+            document.getElementById('progressBar').style.display = 'none';
+        }
+
+        // Authenticate user
+        async function authenticate() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            updateStatus('authStatus', 'pending', 'Testing...');
+            document.getElementById('authResult').textContent = 'Authenticating...';
+
+            try {
+                // Login
+                const loginResponse = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (loginResponse.ok) {
+                    // Check user status
+                    const userResponse = await fetch('/api/auth/user', {
+                        credentials: 'include'
+                    });
+
+                    if (userResponse.ok) {
+                        currentUser = await userResponse.json();
+                        updateStatus('authStatus', 'success', 'Connected');
+                        document.getElementById('authSection').classList.add('success');
+                        document.getElementById('authResult').textContent = 
+                            `✅ Authentication successful!\nUser: ${currentUser.username}\nEmail: ${currentUser.email}\nRole: ${currentUser.role}`;
+                        
+                        // Enable upload functionality
+                        document.getElementById('uploadBtn').disabled = false;
+                        
+                        // Test object storage
+                        await testObjectStorage();
+                        
+                    } else {
+                        throw new Error('User check failed');
+                    }
+                } else {
+                    throw new Error('Login failed');
+                }
+            } catch (error) {
+                updateStatus('authStatus', 'error', 'Failed');
+                document.getElementById('authSection').classList.add('error');
+                document.getElementById('authResult').textContent = `❌ Authentication failed: ${error.message}`;
+            }
+        }
+
+        // Test object storage
+        async function testObjectStorage() {
+            try {
+                const response = await fetch('/api/attachments/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        fileName: 'test.txt',
+                        contentType: 'text/plain',
+                        size: 100
+                    })
+                });
+
+                if (response.ok) {
+                    updateStatus('storageStatus', 'success', 'Ready');
+                } else {
+                    throw new Error('Storage test failed');
+                }
+            } catch (error) {
+                updateStatus('storageStatus', 'error', 'Failed');
+            }
+        }
+
+        // Test file upload
+        async function testUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const files = fileInput.files;
+
+            if (!files.length) {
+                document.getElementById('uploadResult').textContent = '⚠️ No files selected';
+                return;
+            }
+
+            if (!currentUser) {
+                document.getElementById('uploadResult').textContent = '⚠️ Please authenticate first';
+                return;
+            }
+
+            uploadedAttachments = [];
+            document.getElementById('uploadBtn').disabled = true;
+            updateStatus('uploadStatus', 'pending', 'Uploading...');
+            
+            let resultText = `Uploading ${files.length} file(s)...\n\n`;
+            document.getElementById('uploadResult').textContent = resultText;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                showProgress((i / files.length) * 50);
+
+                try {
+                    resultText += `📁 ${file.name} (${Math.round(file.size/1024)} KB)\n`;
+                    document.getElementById('uploadResult').textContent = resultText;
+
+                    // Get upload URL
+                    const response = await fetch('/api/attachments/upload', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                            fileName: file.name,
+                            contentType: file.type,
+                            size: file.size
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Upload URL failed: ${await response.text()}`);
+                    }
+
+                    const { uploadURL } = await response.json();
+                    showProgress(((i + 0.5) / files.length) * 100);
+
+                    // Upload to storage
+                    const uploadResponse = await fetch(uploadURL, {
+                        method: 'PUT',
+                        body: file,
+                        headers: { 'Content-Type': file.type }
+                    });
+
+                    if (uploadResponse.ok) {
+                        const attachment = {
+                            id: `file-${Date.now()}-${i}`,
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            url: uploadURL.split('?')[0],
+                            uploadedAt: new Date()
+                        };
+                        uploadedAttachments.push(attachment);
+                        resultText += `  ✅ Uploaded successfully\n`;
+                    } else {
+                        throw new Error(`Storage upload failed: ${uploadResponse.status}`);
+                    }
+
+                } catch (error) {
+                    resultText += `  ❌ Failed: ${error.message}\n`;
+                }
+
+                showProgress(((i + 1) / files.length) * 100);
+                document.getElementById('uploadResult').textContent = resultText;
+            }
+
+            hideProgress();
+            
+            if (uploadedAttachments.length > 0) {
+                updateStatus('uploadStatus', 'success', `${uploadedAttachments.length} Files`);
+                document.getElementById('uploadSection').classList.add('success');
+                document.getElementById('sendBtn').disabled = false;
+                resultText += `\n🎉 ${uploadedAttachments.length} file(s) uploaded successfully!`;
+            } else {
+                updateStatus('uploadStatus', 'error', 'Failed');
+                document.getElementById('uploadSection').classList.add('error');
+                resultText += '\n❌ No files were uploaded successfully';
+            }
+
+            document.getElementById('uploadResult').textContent = resultText;
+            document.getElementById('uploadBtn').disabled = false;
+        }
+
+        // Send message with attachments
+        async function sendMessageWithAttachments() {
+            if (!currentUser) {
+                document.getElementById('messageResult').textContent = '⚠️ Please authenticate first';
+                return;
+            }
+
+            const messageContent = document.getElementById('messageContent').value;
+            const securityLevel = document.getElementById('securityLevel').value;
+
+            if (!messageContent && uploadedAttachments.length === 0) {
+                document.getElementById('messageResult').textContent = '⚠️ Enter message or upload files';
+                return;
+            }
+
+            updateStatus('messageStatus', 'pending', 'Sending...');
+            document.getElementById('sendBtn').disabled = true;
+
+            try {
+                // Get conversations
+                const convsResponse = await fetch('/api/conversations', {
+                    credentials: 'include'
+                });
+
+                if (convsResponse.ok) {
+                    const conversations = await convsResponse.json();
+                    if (conversations.length > 0) {
+                        conversationId = conversations[0].id;
+                    }
+                }
+
+                if (!conversationId) {
+                    throw new Error('No conversation available');
+                }
+
+                // Send message
+                const messageData = {
+                    content: messageContent,
+                    attachments: uploadedAttachments,
+                    securityLevel: securityLevel
+                };
+
+                const response = await fetch(`/api/conversations/${conversationId}/messages`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(messageData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    updateStatus('messageStatus', 'success', 'Sent');
+                    document.getElementById('messageSection').classList.add('success');
+                    document.getElementById('messageResult').textContent = 
+                        `✅ Message sent successfully!\n` +
+                        `Message ID: ${result.id}\n` +
+                        `Content: "${messageContent}"\n` +
+                        `Attachments: ${uploadedAttachments.length}\n` +
+                        `Security Level: ${securityLevel}`;
+                } else {
+                    throw new Error(`Send failed: ${await response.text()}`);
+                }
+
+            } catch (error) {
+                updateStatus('messageStatus', 'error', 'Failed');
+                document.getElementById('messageSection').classList.add('error');
+                document.getElementById('messageResult').textContent = `❌ Failed to send: ${error.message}`;
+            }
+
+            document.getElementById('sendBtn').disabled = false;
+        }
+
+        // Load recent messages
+        async function loadRecentMessages() {
+            if (!conversationId) {
+                document.getElementById('messagesResult').textContent = '⚠️ No conversation available';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/conversations/${conversationId}/messages`, {
+                    credentials: 'include'
+                });
+
+                if (response.ok) {
+                    const messages = await response.json();
+                    let resultText = `📬 Found ${messages.length} total messages\n\n`;
+                    
+                    const recentWithAttachments = messages
+                        .filter(msg => msg.attachments && msg.attachments.length > 0)
+                        .slice(-5);
+
+                    if (recentWithAttachments.length > 0) {
+                        resultText += `🔗 Recent messages with attachments:\n\n`;
+                        recentWithAttachments.forEach(msg => {
+                            resultText += `📝 ${msg.sender?.username || 'Unknown'}: "${msg.content}"\n`;
+                            resultText += `   Security: ${msg.securityLevel} | Time: ${new Date(msg.createdAt).toLocaleTimeString()}\n`;
+                            msg.attachments.forEach(att => {
+                                resultText += `   📎 ${att.name} (${Math.round(att.size/1024)} KB)\n`;
+                            });
+                            resultText += '\n';
+                        });
+                    } else {
+                        resultText += '📭 No messages with attachments found\n';
+                    }
+
+                    document.getElementById('messagesResult').textContent = resultText;
+                    document.getElementById('resultsSection').classList.add('success');
+                } else {
+                    throw new Error('Failed to load messages');
+                }
+            } catch (error) {
+                document.getElementById('messagesResult').textContent = `❌ Error: ${error.message}`;
+            }
+        }
+
+        // File input change handler
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const files = this.files;
+            if (files.length > 0) {
+                let info = `📁 Selected ${files.length} file(s):\n`;
+                for (let file of files) {
+                    info += `  • ${file.name} (${Math.round(file.size/1024)} KB, ${file.type})\n`;
+                }
+                document.getElementById('uploadResult').textContent = info;
+            }
+        });
+
+        // Auto-start demo
+        window.onload = function() {
+            console.log('🚀 SKRAM Attachment Demo Loaded');
+            setTimeout(() => {
+                document.getElementById('authResult').textContent = 'Demo ready! Click Login to start testing...';
+            }, 500);
+        };
+    </script>
+</body>
+</html>

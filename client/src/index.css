@@ -1,0 +1,360 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --success: hsl(142, 76%, 36%);
+  --warning: hsl(38, 92%, 50%);
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --success: hsl(142, 76%, 36%);
+  --warning: hsl(38, 92%, 50%);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    height: 100%;
+    min-height: 100vh;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    height: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+  }
+
+  #root {
+    height: 100%;
+    min-height: 100vh;
+  }
+
+  /* Ensure all elements use full viewport height */
+  .h-screen {
+    height: 100vh !important;
+    min-height: 100vh !important;
+  }
+  
+  /* Mobile-first responsive improvements */
+  @media (max-width: 640px) {
+    /* Better text readability on mobile */
+    .mobile-text-sm {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    
+    /* Improved spacing for mobile layouts */
+    .mobile-spacing {
+      padding: 12px;
+    }
+    
+    /* Enhanced scrollable areas on mobile */
+    .mobile-scroll {
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
+  }
+  
+  /* Tablet optimizations */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .tablet-optimized {
+      padding: 16px;
+    }
+  }
+  
+  /* Enhanced touch interactions */
+  .touch-friendly {
+    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Enhanced mobile touch feedback */
+  @media (max-width: 768px) {
+    .touch-friendly:active {
+      transform: scale(0.96);
+      transition: transform 0.08s ease-out;
+    }
+    
+    /* Better button spacing on mobile */
+    .mobile-button-spacing {
+      margin: 2px 0;
+    }
+    
+    /* Sidebar backdrop effect */
+    .sidebar-mobile {
+      backdrop-filter: blur(4px);
+    }
+    
+    /* Floating action button pulse animation */
+    @keyframes floating-pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 25px rgba(59, 130, 246, 0.4);
+      }
+    }
+    
+    .floating-action-button {
+      animation: floating-pulse 3s ease-in-out infinite;
+    }
+    
+    /* Swipe indicator animation */
+    @keyframes swipe-hint {
+      0%, 100% {
+        opacity: 0.3;
+      }
+      50% {
+        opacity: 0.8;
+      }
+    }
+    
+    .swipe-indicator {
+      animation: swipe-hint 2s ease-in-out infinite;
+    }
+  }
+  
+  /* Smooth transitions for all interactive elements */
+  button, a, .interactive {
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+/* Screenshot prevention - Multi-layer protection - TEMPORARILY DISABLED FOR TESTING */
+/*.screenshot-protection {
+  position: relative;
+  overflow: hidden;
+}*/
+
+/*.screenshot-protection::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  z-index: 9998;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 8px,
+      rgba(37, 99, 235, 0.03) 8px,
+      rgba(37, 99, 235, 0.03) 16px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 12px,
+      rgba(239, 68, 68, 0.02) 12px,
+      rgba(239, 68, 68, 0.02) 24px
+    );
+}*/
+
+/*.screenshot-protection::after {
+  content: '⚠️ SECURE CONTENT - SCREENSHOT PROTECTED ⚠️';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 12px;
+  color: rgba(37, 99, 235, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  line-height: 40px;
+  letter-spacing: 20px;
+  transform: rotate(-15deg);
+}*/
+
+
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(215, 16%, 82%);
+  border-radius: 2px;
+}
+
+/* Message animations */
+.message-fade-in {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Auto-delete timer animation */
+.delete-timer {
+  animation: countdown 24s linear;
+}
+
+@keyframes countdown {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* Additional color utilities */
+.text-success {
+  color: hsl(142, 76%, 36%);
+}
+
+.text-warning {
+  color: hsl(38, 92%, 50%);
+}
+
+.bg-success {
+  background-color: hsl(142, 76%, 36%);
+}
+
+.bg-warning {
+  background-color: hsl(38, 92%, 50%);
+}
+
+/* Prevent text selection on sensitive areas */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Disable context menu */
+.no-context-menu {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Disable drag and additional protections */
+.no-drag {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+/* Advanced screenshot protection - TEMPORARILY DISABLED FOR TESTING */
+/*.secure-content {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}*/
+
+
+
+/* Message content protection */
+.message-content {
+  background: linear-gradient(45deg, transparent 30%, rgba(37, 99, 235, 0.02) 50%, transparent 70%);
+  background-size: 20px 20px;
+}
+
+
+
+/* Fix slow header rendering - Disable all animations globally */
+.chat-header, .chat-header * {
+  animation: none !important;
+  transition: none !important;
+  will-change: auto !important;
+  transform: none !important;
+}
+
+/* Disable all screenshot protection animations */
+.screenshot-protection::before,
+.screenshot-protection::after {
+  animation: none !important;
+}

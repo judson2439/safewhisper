@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PHI Checkbox Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-box { border: 1px solid #ccc; padding: 20px; margin: 10px 0; }
+        .checkbox-item { margin: 10px 0; padding: 8px; border: 1px solid #eee; }
+        input[type="checkbox"] { margin-right: 8px; }
+        button { margin: 5px; padding: 8px 15px; }
+        .selected-display { background: #f0f8ff; padding: 10px; margin: 10px 0; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>PHI Checkbox State Test</h1>
+    
+    <div class="test-box">
+        <h3>Simulated PHI Modal Checkboxes</h3>
+        <p>Test the exact same logic as the PHI message modal:</p>
+        
+        <div class="checkbox-item">
+            <input type="checkbox" id="insurance_card">
+            <label for="insurance_card">Insurance Card</label>
+        </div>
+        
+        <div class="checkbox-item">
+            <input type="checkbox" id="patient_name">
+            <label for="patient_name">Patient Name</label>
+        </div>
+        
+        <div class="checkbox-item">
+            <input type="checkbox" id="medical_records">
+            <label for="medical_records">Medical Records</label>
+        </div>
+
+        <div class="checkbox-item">
+            <input type="checkbox" id="diagnosis">
+            <label for="diagnosis">Diagnosis</label>
+        </div>
+        
+        <button onclick="resetState()">Reset All</button>
+        <button onclick="checkState()">Check State</button>
+        <button onclick="simulateModalOpen()">Simulate Modal Open</button>
+        
+        <div class="selected-display" id="state-display">
+            Selected PHI Types: []
+        </div>
+    </div>
+
+    <div class="test-box">
+        <h3>Debug Console</h3>
+        <div id="debug-log" style="height: 200px; overflow-y: auto; background: #f5f5f5; padding: 10px; font-family: monospace; font-size: 12px;"></div>
+    </div>
+    
+    <script>
+        let selectedPHITypes = [];
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logDiv = document.getElementById('debug-log');
+            logDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+            logDiv.scrollTop = logDiv.scrollTop;
+            console.log(message);
+        }
+        
+        function handlePHITypeChange(phiType, checked) {
+            log(`=== PHI Type Change Event ===`);
+            log(`PHI Type: ${phiType}`);
+            log(`Checked value: ${checked}`);
+            log(`Current selectedPHITypes before change: [${selectedPHITypes.join(', ')}]`);
+            
+            const isChecked = checked === true;
+            
+            // Simulate the exact setState logic from React
+            const prev = [...selectedPHITypes];
+            const currentlySelected = prev.includes(phiType);
+            let newTypes;
+            
+            if (isChecked && !currentlySelected) {
+                newTypes = [...prev, phiType];
+                log(`✅ Adding PHI type: ${phiType}`);
+                log(`Previous array: [${prev.join(', ')}]`);
+                log(`New array: [${newTypes.join(', ')}]`);
+            } else if (!isChecked && currentlySelected) {
+                newTypes = prev.filter(type => type !== phiType);
+                log(`❌ Removing PHI type: ${phiType}`);
+                log(`Previous array: [${prev.join(', ')}]`);
+                log(`New array: [${newTypes.join(', ')}]`);
+            } else {
+                newTypes = [...prev];
+                log(`🔄 No change needed for PHI type: ${phiType}`);
+                log(`Array remains: [${newTypes.join(', ')}]`);
+            }
+            
+            selectedPHITypes = newTypes;
+            log(`=== Final Result ===`);
+            log(`Returning new PHI types: [${newTypes.join(', ')}]`);
+            
+            updateDisplay();
+        }
+        
+        function updateDisplay() {
+            const display = selectedPHITypes.length > 0 ? `[${selectedPHITypes.join(', ')}]` : '[]';
+            document.getElementById('state-display').textContent = `Selected PHI Types: ${display}`;
+            
+            // Also update checkbox visual states to match our internal state
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                const shouldBeChecked = selectedPHITypes.includes(checkbox.id);
+                if (checkbox.checked !== shouldBeChecked) {
+                    log(`🔧 Correcting checkbox ${checkbox.id}: was ${checkbox.checked}, should be ${shouldBeChecked}`);
+                    checkbox.checked = shouldBeChecked;
+                }
+            });
+        }
+        
+        function resetState() {
+            log(`🔄 Resetting all state (simulating modal open)`);
+            selectedPHITypes = [];
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            updateDisplay();
+        }
+        
+        function checkState() {
+            log(`📊 Current state check:`);
+            log(`selectedPHITypes: [${selectedPHITypes.join(', ')}]`);
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                log(`  ${cb.id}: checked=${cb.checked}, inArray=${selectedPHITypes.includes(cb.id)}`);
+            });
+        }
+        
+        function simulateModalOpen() {
+            log(`🎯 Simulating PHI Modal open - resetting state`);
+            resetState();
+        }
+        
+        // Set up event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    log(`🔄 Direct checkbox change for ${this.id}: ${this.checked} (isSelected: ${selectedPHITypes.includes(this.id)})`);
+                    handlePHITypeChange(this.id, this.checked);
+                });
+            });
+            
+            log(`🚀 PHI Checkbox test initialized`);
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>

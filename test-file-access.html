@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test File Access</title>
+</head>
+<body>
+    <h1>File Access Test</h1>
+    <button onclick="testFileAccess()">Test File Access</button>
+    <div id="result"></div>
+    
+    <script>
+        async function testFileAccess() {
+            const attachmentId = 'file-1754270382268-0'; // From the logs
+            const url = `/api/attachments/serve/${encodeURIComponent(attachmentId)}`;
+            
+            console.log('Testing file access with URL:', url);
+            document.getElementById('result').innerHTML = 'Testing...';
+            
+            try {
+                const response = await fetch(url);
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
+                if (response.ok) {
+                    document.getElementById('result').innerHTML = 'File access successful!';
+                    // Try to open in new window
+                    window.open(url, '_blank');
+                } else {
+                    const errorText = await response.text();
+                    document.getElementById('result').innerHTML = `Error: ${response.status} - ${errorText}`;
+                }
+            } catch (error) {
+                console.error('Error accessing file:', error);
+                document.getElementById('result').innerHTML = `Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

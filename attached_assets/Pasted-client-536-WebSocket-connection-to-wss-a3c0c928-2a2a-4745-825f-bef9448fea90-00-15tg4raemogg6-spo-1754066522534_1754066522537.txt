@@ -1,0 +1,271 @@
+client:536  WebSocket connection to 'wss://a3c0c928-2a2a-4745-825f-bef9448fea90-00-15tg4raemogg6.spock.replit.dev/?token=6TYTFcIML-Qt' failed: 
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=6TYTFcIML-Qt' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ModeratorDemo.tsx:283 DEBUG - All conversations: Array(0)
+ModeratorDemo.tsx:284 DEBUG - Group conversations: 0
+ModeratorDemo.tsx:285 DEBUG - Direct conversations: 0
+ModeratorDemo.tsx:286 DEBUG - Direct conversation names: Array(0)
+encryption.ts:13 User encryption key initialized for user: 50fd7bc9...
+websocket.ts:27 Connecting to WebSocket: wss://a3c0c928-2a2a-4745-825f-bef9448fea90-00-15tg4raemogg6.spock.replit.dev/ws
+ModeratorDemo.tsx:283 DEBUG - All conversations: Array(0)
+ModeratorDemo.tsx:284 DEBUG - Group conversations: 0
+ModeratorDemo.tsx:285 DEBUG - Direct conversations: 0
+ModeratorDemo.tsx:286 DEBUG - Direct conversation names: Array(0)
+websocket.ts:31 WebSocket connected
+websocket.ts:127 WebSocket sending message: {"type":"authenticate","userId":"50fd7bc9-ce5a-4e25-a6ca-951fd0736372"}
+ModeratorDemo.tsx:283 DEBUG - All conversations: Array(0)
+ModeratorDemo.tsx:284 DEBUG - Group conversations: 0
+ModeratorDemo.tsx:285 DEBUG - Direct conversations: 0
+ModeratorDemo.tsx:286 DEBUG - Direct conversation names: Array(0)
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:283 DEBUG - All conversations: Array(6)
+ModeratorDemo.tsx:284 DEBUG - Group conversations: 3
+ModeratorDemo.tsx:285 DEBUG - Direct conversations: 3
+ModeratorDemo.tsx:286 DEBUG - Direct conversation names: Array(3)
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: Direct: testmod & fixeduser Current identifiers: Array(5)
+ModeratorDemo.tsx:473 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:475 DEBUG - Other user from direct format: fixeduser
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: d9943d68-0d0b-4e20-bc19-891558031d3f with display name: fixeduser
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: 3f3c4c04-339c-42b8-af48-4b62e20198cc with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: a18387be-83d0-4e53-85df-52c0fd24a026 with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:283 DEBUG - All conversations: Array(6)
+ModeratorDemo.tsx:284 DEBUG - Group conversations: 3
+ModeratorDemo.tsx:285 DEBUG - Direct conversations: 3
+ModeratorDemo.tsx:286 DEBUG - Direct conversation names: Array(3)
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: Direct: testmod & fixeduser Current identifiers: Array(5)
+ModeratorDemo.tsx:473 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:475 DEBUG - Other user from direct format: fixeduser
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: d9943d68-0d0b-4e20-bc19-891558031d3f with display name: fixeduser
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: 3f3c4c04-339c-42b8-af48-4b62e20198cc with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: a18387be-83d0-4e53-85df-52c0fd24a026 with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+websocket.ts:127 WebSocket sending message: {"type":"join_conversation","conversationId":"198e7f8d-b788-498a-ba85-ea9b42ea34a5"}
+ModeratorDemo.tsx:283 DEBUG - All conversations: Array(6)
+ModeratorDemo.tsx:284 DEBUG - Group conversations: 3
+ModeratorDemo.tsx:285 DEBUG - Direct conversations: 3
+ModeratorDemo.tsx:286 DEBUG - Direct conversation names: Array(3)
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: Direct: testmod & fixeduser Current identifiers: Array(5)
+ModeratorDemo.tsx:473 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:475 DEBUG - Other user from direct format: fixeduser
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: d9943d68-0d0b-4e20-bc19-891558031d3f with display name: fixeduser
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: 3f3c4c04-339c-42b8-af48-4b62e20198cc with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: a18387be-83d0-4e53-85df-52c0fd24a026 with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:283 DEBUG - All conversations: Array(6)
+ModeratorDemo.tsx:284 DEBUG - Group conversations: 3
+ModeratorDemo.tsx:285 DEBUG - Direct conversations: 3
+ModeratorDemo.tsx:286 DEBUG - Direct conversation names: Array(3)
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: Direct: testmod & fixeduser Current identifiers: Array(5)
+ModeratorDemo.tsx:473 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:475 DEBUG - Other user from direct format: fixeduser
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: d9943d68-0d0b-4e20-bc19-891558031d3f with display name: fixeduser
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: 3f3c4c04-339c-42b8-af48-4b62e20198cc with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: a18387be-83d0-4e53-85df-52c0fd24a026 with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:283 DEBUG - All conversations: Array(6)
+ModeratorDemo.tsx:284 DEBUG - Group conversations: 3
+ModeratorDemo.tsx:285 DEBUG - Direct conversations: 3
+ModeratorDemo.tsx:286 DEBUG - Direct conversation names: Array(3)
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: Direct: testmod & fixeduser Current identifiers: Array(5)
+ModeratorDemo.tsx:473 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:475 DEBUG - Other user from direct format: fixeduser
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: d9943d68-0d0b-4e20-bc19-891558031d3f with display name: fixeduser
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: 3f3c4c04-339c-42b8-af48-4b62e20198cc with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: a18387be-83d0-4e53-85df-52c0fd24a026 with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+websocket.ts:146 WebSocket sendMessage called: Object
+websocket.ts:116 Original message content: hi
+encryption.ts:32 Message encrypted for conversation: 198e7f8d...
+websocket.ts:121 Encrypted for conversation: U2FsdGVkX19GnwZwn1pXPYd1HgdlNx8xF7vXjElzaRQ=
+websocket.ts:127 WebSocket sending message: {"type":"send_message","conversationId":"198e7f8d-b788-498a-ba85-ea9b42ea34a5","content":"U2FsdGVkX19GnwZwn1pXPYd1HgdlNx8xF7vXjElzaRQ=","messageType":"text","participantIds":["50fd7bc9-ce5a-4e25-a6ca-951fd0736372"]}
+ModeratorDemo.tsx:283 DEBUG - All conversations: Array(6)
+ModeratorDemo.tsx:284 DEBUG - Group conversations: 3
+ModeratorDemo.tsx:285 DEBUG - Direct conversations: 3
+ModeratorDemo.tsx:286 DEBUG - Direct conversation names: Array(3)
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: Direct: testmod & fixeduser Current identifiers: Array(5)
+ModeratorDemo.tsx:473 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:475 DEBUG - Other user from direct format: fixeduser
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: d9943d68-0d0b-4e20-bc19-891558031d3f with display name: fixeduser
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: 3f3c4c04-339c-42b8-af48-4b62e20198cc with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: a18387be-83d0-4e53-85df-52c0fd24a026 with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+websocket.ts:90 Received encrypted message content: U2FsdGVkX19GnwZwn1pXPYd1HgdlNx8xF7vXjElzaRQ=
+encryption.ts:46 Message decrypted from conversation: 198e7f8d...
+websocket.ts:99 Decrypted conversation message content: hi
+ModeratorDemo.tsx:283 DEBUG - All conversations: Array(6)
+ModeratorDemo.tsx:284 DEBUG - Group conversations: 3
+ModeratorDemo.tsx:285 DEBUG - Direct conversations: 3
+ModeratorDemo.tsx:286 DEBUG - Direct conversation names: Array(3)
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: Direct: testmod & fixeduser Current identifiers: Array(5)
+ModeratorDemo.tsx:473 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:475 DEBUG - Other user from direct format: fixeduser
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: d9943d68-0d0b-4e20-bc19-891558031d3f with display name: fixeduser
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: 3f3c4c04-339c-42b8-af48-4b62e20198cc with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:468 DEBUG - Processing conversation: testmod, Private Chat Current identifiers: Array(5)
+ModeratorDemo.tsx:482 DEBUG - Old format parts: Array(2)
+ModeratorDemo.tsx:486 DEBUG - User parts after filtering: Array(1)
+ModeratorDemo.tsx:490 DEBUG - Other user found in old format: undefined
+ModeratorDemo.tsx:674 DEBUG - Rendering conversation: a18387be-83d0-4e53-85df-52c0fd24a026 with display name: null
+ModeratorDemo.tsx:678 DEBUG - Skipping conversation with empty/invalid display name: testmod, Private Chat
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1175 DEBUG - Member filtering: Object
+websocket.ts:46 WebSocket disconnected
+websocket.ts:76 Attempting to reconnect... (1/5)
+websocket.ts:27 Connecting to WebSocket: wss://a3c0c928-2a2a-4745-825f-bef9448fea90-00-15tg4raemogg6.spock.replit.dev/ws
+websocket.ts:28  WebSocket connection to 'wss://a3c0c928-2a2a-4745-825f-bef9448fea90-00-15tg4raemogg6.spock.replit.dev/ws' failed: 
+connect @ websocket.ts:28
+websocket.ts:51  WebSocket error: Event
+ws.onerror @ websocket.ts:51
+websocket.ts:46 WebSocket disconnected
+websocket.ts:76 Attempting to reconnect... (2/5)
+websocket.ts:27 Connecting to WebSocket: wss://a3c0c928-2a2a-4745-825f-bef9448fea90-00-15tg4raemogg6.spock.replit.dev/ws
+websocket.ts:31 WebSocket connected

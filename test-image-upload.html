@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Image Upload</title>
+</head>
+<body>
+    <h1>Test Image Upload for SKRAM</h1>
+    <p><strong>Instructions:</strong> This page tests the file upload functionality. You should be automatically logged in from your main chat session.</p>
+    
+    <div>
+        <h2>Step 1: Login</h2>
+        <button onclick="login()">Login as mickey_mouse</button>
+        <div id="loginResult"></div>
+    </div>
+    
+    <div>
+        <h2>Step 2: Test Image Display</h2>
+        <p>Testing existing image URL with proxy:</p>
+        <img id="testImage" src="/api/attachments-proxy?url=https%3A//storage.googleapis.com/replit-objstore-9d723fd4-d7bd-486c-bf8b-1031306359d8/.private/attachments/b453fdd2-6704-44b0-9e31-f088cd892ebe.png" 
+             style="max-width: 300px; border: 1px solid #ccc;" 
+             onload="console.log('Image loaded successfully')"
+             onerror="console.log('Image failed to load')">
+    </div>
+    
+    <div>
+        <h2>Step 3: Upload Test</h2>
+        <input type="file" id="fileInput" accept="image/*">
+        <button onclick="testUpload()">Test Upload</button>
+        <div id="uploadResult"></div>
+    </div>
+
+    <script>
+        async function login() {
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        username: 'mickey_mouse',
+                        password: 'password123'
+                    })
+                });
+                
+                const result = await response.text();
+                document.getElementById('loginResult').innerHTML = 
+                    `Login ${response.ok ? 'successful' : 'failed'}: ${result}`;
+                console.log('Login response:', response.status, result);
+            } catch (error) {
+                console.error('Login error:', error);
+                document.getElementById('loginResult').innerHTML = `Login error: ${error.message}`;
+            }
+        }
+        
+        async function testUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file first');
+                return;
+            }
+            
+            try {
+                // Step 1: Get upload URL
+                console.log('Getting upload URL for:', file.name);
+                const uploadUrlResponse = await fetch('/api/attachments/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        fileName: file.name,
+                        contentType: file.type,
+                        size: file.size
+                    })
+                });
+                
+                if (!uploadUrlResponse.ok) {
+                    throw new Error(`Failed to get upload URL: ${uploadUrlResponse.status}`);
+                }
+                
+                const { uploadURL } = await uploadUrlResponse.json();
+                console.log('Got upload URL:', uploadURL);
+                
+                // Step 2: Upload file
+                console.log('Uploading file...');
+                const uploadResponse = await fetch(uploadURL, {
+                    method: 'PUT',
+                    body: file
+                });
+                
+                if (!uploadResponse.ok) {
+                    throw new Error(`Upload failed: ${uploadResponse.status}`);
+                }
+                
+                console.log('File uploaded successfully');
+                document.getElementById('uploadResult').innerHTML = 
+                    `✓ Upload successful! File URL: ${uploadURL}`;
+                    
+                // Step 3: Test image display
+                const img = document.createElement('img');
+                img.src = `/api/attachments-proxy?url=${encodeURIComponent(uploadURL)}`;
+                img.style.maxWidth = '300px';
+                img.style.border = '1px solid #ccc';
+                img.style.marginTop = '10px';
+                img.onload = () => console.log('Uploaded image displays correctly');
+                img.onerror = () => console.log('Uploaded image failed to display');
+                document.getElementById('uploadResult').appendChild(img);
+                
+            } catch (error) {
+                console.error('Upload error:', error);
+                document.getElementById('uploadResult').innerHTML = `Upload error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
