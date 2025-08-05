@@ -1,0 +1,110 @@
+client:536  WebSocket connection to 'wss://a3c0c928-2a2a-4745-825f-bef9448fea90-00-15tg4raemogg6.spock.replit.dev/?token=qDAZLBslLaAq' failed: 
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=qDAZLBslLaAq' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ModeratorDemo.tsx:250 DEBUG - Sidebar Private Skram Data: Object
+ModeratorDemo.tsx:307 DEBUG - All conversations: Array(0)
+ModeratorDemo.tsx:308 DEBUG - Group conversations: 0
+ModeratorDemo.tsx:309 DEBUG - Direct conversations: 0
+ModeratorDemo.tsx:310 DEBUG - Direct conversation names: Array(0)
+websocket.ts:25 Connecting to WebSocket: wss://a3c0c928-2a2a-4745-825f-bef9448fea90-00-15tg4raemogg6.spock.replit.dev/ws
+ModeratorDemo.tsx:250 DEBUG - Sidebar Private Skram Data: Object
+ModeratorDemo.tsx:307 DEBUG - All conversations: Array(0)
+ModeratorDemo.tsx:308 DEBUG - Group conversations: 0
+ModeratorDemo.tsx:309 DEBUG - Direct conversations: 0
+ModeratorDemo.tsx:310 DEBUG - Direct conversation names: Array(0)
+websocket.ts:29 WebSocket connected
+websocket.ts:113 WebSocket sending message: {"type":"authenticate","userId":"66f06d95-db0d-4905-a982-1684bdb1fa6c"}
+websocket.ts:87 WebSocket message received: authenticated Object
+ModeratorDemo.tsx:250 DEBUG - Sidebar Private Skram Data: Object
+ModeratorDemo.tsx:307 DEBUG - All conversations: Array(0)
+ModeratorDemo.tsx:308 DEBUG - Group conversations: 0
+ModeratorDemo.tsx:309 DEBUG - Direct conversations: 0
+ModeratorDemo.tsx:310 DEBUG - Direct conversation names: Array(0)
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:250 DEBUG - Sidebar Private Skram Data: Object
+ModeratorDemo.tsx:307 DEBUG - All conversations: Array(3)
+ModeratorDemo.tsx:308 DEBUG - Group conversations: 2
+ModeratorDemo.tsx:309 DEBUG - Direct conversations: 1
+ModeratorDemo.tsx:310 DEBUG - Direct conversation names: Array(1)
+ModeratorDemo.tsx:492 DEBUG - Processing conversation: Direct: testmod2 & SMSMODERATOR Current identifiers: Array(5)
+ModeratorDemo.tsx:497 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:499 DEBUG - Other user from direct format: SMSMODERATOR
+ModeratorDemo.tsx:700 DEBUG - Rendering conversation: 2f730597-7a51-4ed7-98e8-7ffcbf624b98 with display name: SMSMODERATOR
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:250 DEBUG - Sidebar Private Skram Data: Object
+ModeratorDemo.tsx:307 DEBUG - All conversations: Array(3)
+ModeratorDemo.tsx:308 DEBUG - Group conversations: 2
+ModeratorDemo.tsx:309 DEBUG - Direct conversations: 1
+ModeratorDemo.tsx:310 DEBUG - Direct conversation names: Array(1)
+ModeratorDemo.tsx:492 DEBUG - Processing conversation: Direct: testmod2 & SMSMODERATOR Current identifiers: Array(5)
+ModeratorDemo.tsx:497 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:499 DEBUG - Other user from direct format: SMSMODERATOR
+ModeratorDemo.tsx:700 DEBUG - Rendering conversation: 2f730597-7a51-4ed7-98e8-7ffcbf624b98 with display name: SMSMODERATOR
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+websocket.ts:113 WebSocket sending message: {"type":"join_conversation","conversationId":"2f730597-7a51-4ed7-98e8-7ffcbf624b98"}
+ModeratorDemo.tsx:250 DEBUG - Sidebar Private Skram Data: Object
+ModeratorDemo.tsx:307 DEBUG - All conversations: Array(3)
+ModeratorDemo.tsx:308 DEBUG - Group conversations: 2
+ModeratorDemo.tsx:309 DEBUG - Direct conversations: 1
+ModeratorDemo.tsx:310 DEBUG - Direct conversation names: Array(1)
+ModeratorDemo.tsx:492 DEBUG - Processing conversation: Direct: testmod2 & SMSMODERATOR Current identifiers: Array(5)
+ModeratorDemo.tsx:497 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:499 DEBUG - Other user from direct format: SMSMODERATOR
+ModeratorDemo.tsx:700 DEBUG - Rendering conversation: 2f730597-7a51-4ed7-98e8-7ffcbf624b98 with display name: SMSMODERATOR
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:250 DEBUG - Sidebar Private Skram Data: Object
+ModeratorDemo.tsx:307 DEBUG - All conversations: Array(3)
+ModeratorDemo.tsx:308 DEBUG - Group conversations: 2
+ModeratorDemo.tsx:309 DEBUG - Direct conversations: 1
+ModeratorDemo.tsx:310 DEBUG - Direct conversation names: Array(1)
+ModeratorDemo.tsx:492 DEBUG - Processing conversation: Direct: testmod2 & SMSMODERATOR Current identifiers: Array(5)
+ModeratorDemo.tsx:497 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:499 DEBUG - Other user from direct format: SMSMODERATOR
+ModeratorDemo.tsx:700 DEBUG - Rendering conversation: 2f730597-7a51-4ed7-98e8-7ffcbf624b98 with display name: SMSMODERATOR
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+ModeratorDemo.tsx:250 DEBUG - Sidebar Private Skram Data: Object
+ModeratorDemo.tsx:307 DEBUG - All conversations: Array(3)
+ModeratorDemo.tsx:308 DEBUG - Group conversations: 2
+ModeratorDemo.tsx:309 DEBUG - Direct conversations: 1
+ModeratorDemo.tsx:310 DEBUG - Direct conversation names: Array(1)
+ModeratorDemo.tsx:492 DEBUG - Processing conversation: Direct: testmod2 & SMSMODERATOR Current identifiers: Array(5)
+ModeratorDemo.tsx:497 DEBUG - Direct format usernames: Array(2)
+ModeratorDemo.tsx:499 DEBUG - Other user from direct format: SMSMODERATOR
+ModeratorDemo.tsx:700 DEBUG - Rendering conversation: 2f730597-7a51-4ed7-98e8-7ffcbf624b98 with display name: SMSMODERATOR
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object
+ModeratorDemo.tsx:1208 DEBUG - Member filtering: Object

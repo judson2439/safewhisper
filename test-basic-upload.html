@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic Upload Test</title>
+</head>
+<body>
+    <h1>Test File Upload</h1>
+    <input type="file" id="fileInput" multiple>
+    <button onclick="uploadFiles()">Upload</button>
+    <div id="results"></div>
+
+    <script>
+        async function uploadFiles() {
+            const fileInput = document.getElementById('fileInput');
+            const files = fileInput.files;
+            const results = document.getElementById('results');
+            
+            if (files.length === 0) {
+                results.innerHTML = 'No files selected';
+                return;
+            }
+            
+            results.innerHTML = 'Uploading...';
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                console.log('Processing:', file.name);
+                
+                try {
+                    // Get upload URL
+                    const response = await fetch('/api/attachments/upload', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            fileName: file.name,
+                            contentType: file.type,
+                            size: file.size
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    console.log('Upload URL response:', data);
+                    
+                    if (response.ok) {
+                        // Upload file
+                        const uploadResponse = await fetch(data.uploadURL, {
+                            method: 'PUT',
+                            body: file,
+                            headers: { 'Content-Type': file.type }
+                        });
+                        
+                        if (uploadResponse.ok) {
+                            results.innerHTML += `<br>✓ ${file.name} uploaded successfully`;
+                        } else {
+                            results.innerHTML += `<br>✗ ${file.name} upload failed: ${uploadResponse.status}`;
+                        }
+                    } else {
+                        results.innerHTML += `<br>✗ ${file.name} URL request failed: ${response.status} - ${data.message}`;
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    results.innerHTML += `<br>✗ ${file.name} error: ${error.message}`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

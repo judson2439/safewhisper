@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Immediate PHI Test</title>
+    <script>
+        console.log('🚨 IMMEDIATE PHI TEST - Loading');
+        
+        // Simulate the exact PHI modal issue
+        let phiTypes = [];
+        
+        function selectPHI(type) {
+            console.log('Selecting PHI type:', type);
+            if (!phiTypes.includes(type)) {
+                phiTypes.push(type);
+            }
+            console.log('Current PHI types:', phiTypes);
+            document.getElementById('status').textContent = 'Selected: ' + phiTypes.join(', ');
+        }
+        
+        function testSend() {
+            console.log('🚨 TEST SEND - phiTypes:', phiTypes);
+            console.log('🚨 TEST SEND - length:', phiTypes.length);
+            
+            const captured = [...phiTypes];
+            console.log('📋 CAPTURED types:', captured);
+            
+            if (captured.length === 0) {
+                alert('❌ WOULD FAIL - No PHI types');
+                console.log('❌ Send would fail');
+            } else {
+                alert('✅ WOULD SUCCEED with: ' + captured.join(', '));
+                console.log('✅ Send would succeed');
+            }
+        }
+        
+        function reset() {
+            phiTypes = [];
+            console.log('Reset PHI types');
+            document.getElementById('status').textContent = 'None selected';
+        }
+    </script>
+</head>
+<body>
+    <h1>Immediate PHI Test</h1>
+    <p>Test the exact issue:</p>
+    
+    <button onclick="selectPHI('insurance_card')">Select Insurance Card</button>
+    <button onclick="selectPHI('patient_name')">Select Patient Name</button>
+    <br><br>
+    
+    <div id="status">None selected</div>
+    <br>
+    
+    <button onclick="testSend()" style="background: red; color: white; padding: 10px;">🚨 TEST SEND</button>
+    <button onclick="reset()">Reset</button>
+    
+    <p>Check console for debugging output</p>
+</body>
+</html>
