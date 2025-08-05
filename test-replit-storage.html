@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Replit Object Storage - Send Image to Healthcare Group</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; }
+        .status { padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        button { padding: 12px 24px; margin: 10px 5px; border: none; border-radius: 5px; cursor: pointer; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        input[type="file"] { margin: 10px 0; padding: 10px; }
+        .result { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px; font-family: monospace; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Send Image to Healthcare Inc Test Group</h1>
+        
+        <div class="status info">
+            <h3>Replit Object Storage Status: READY</h3>
+            <p>Bucket: replit-objstore-9d723fd4-d7bd-486c-bf8b-1031306359d8</p>
+            <p>Using Replit's built-in object storage (no Google Cloud needed)</p>
+        </div>
+
+        <div class="step">
+            <h3>Step 1: Authenticate</h3>
+            <button class="btn-primary" onclick="authenticate()">Login as mickey_mouse</button>
+            <div class="result" id="authResult">Ready to authenticate...</div>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Select & Upload Image</h3>
+            <input type="file" id="imageFile" accept="image/*">
+            <button class="btn-primary" onclick="uploadImage()">Upload Image to Replit Storage</button>
+            <div class="result" id="uploadResult">Select an image file...</div>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Send to Healthcare Inc Group</h3>
+            <input type="text" id="messageText" value="Sending image to Healthcare Inc Test Group" style="width: 400px; padding: 8px;">
+            <button class="btn-success" onclick="sendMessage()">Send Message with Image</button>
+            <div class="result" id="sendResult">Upload image first...</div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let uploadedFile = null;
+        let healthcareConvId = '8670cca4-5bee-4f72-9572-8d0248cd66c6'; // From logs
+
+        async function authenticate() {
+            try {
+                document.getElementById('authResult').textContent = 'Authenticating...';
+                
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ 
+                        username: 'mickey_mouse', 
+                        password: 'password123' 
+                    })
+                });
+
+                if (response.ok) {
+                    const userResponse = await fetch('/api/auth/user', {
+                        credentials: 'include'
+                    });
+                    
+                    if (userResponse.ok) {
+                        currentUser = await userResponse.json();
+                        document.getElementById('authResult').textContent = 
+                            `✅ Authenticated as ${currentUser.username}\nUser ID: ${currentUser.id}\nEmail: ${currentUser.email}`;
+                    }
+                } else {
+                    throw new Error('Authentication failed');
+                }
+            } catch (error) {
+                document.getElementById('authResult').textContent = `❌ Error: ${error.message}`;
+            }
+        }
+
+        async function uploadImage() {
+            const fileInput = document.getElementById('imageFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                document.getElementById('uploadResult').textContent = 'Please select an image file';
+                return;
+            }
+            
+            if (!currentUser) {
+                document.getElementById('uploadResult').textContent = 'Please authenticate first';
+                return;
+            }
+
+            try {
+                document.getElementById('uploadResult').textContent = `Uploading ${file.name} to Replit Object Storage...`;
+                
+                // Get presigned upload URL from Replit storage
+                const uploadResponse = await fetch('/api/attachments/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        fileName: file.name,
+                        contentType: file.type,
+                        size: file.size
+                    })
+                });
+
+                if (!uploadResponse.ok) {
+                    const error = await uploadResponse.text();
+                    throw new Error(`Upload URL failed: ${error}`);
+                }
+
+                const { uploadURL } = await uploadResponse.json();
+                
+                // Upload file to Replit object storage
+                const storageResponse = await fetch(uploadURL, {
+                    method: 'PUT',
+                    body: file,
+                    headers: { 'Content-Type': file.type }
+                });
+
+                if (storageResponse.ok) {
+                    uploadedFile = {
+                        id: `replit-${Date.now()}`,
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        url: uploadURL.split('?')[0],
+                        uploadedAt: new Date()
+                    };
+                    
+                    document.getElementById('uploadResult').textContent = 
+                        `✅ Image uploaded successfully to Replit Object Storage!\n` +
+                        `File: ${file.name}\n` +
+                        `Size: ${Math.round(file.size/1024)} KB\n` +
+                        `Storage URL: ${uploadedFile.url.substring(0, 80)}...`;
+                } else {
+                    throw new Error(`Storage upload failed: ${storageResponse.status}`);
+                }
+            } catch (error) {
+                document.getElementById('uploadResult').textContent = `❌ Upload failed: ${error.message}`;
+            }
+        }
+
+        async function sendMessage() {
+            if (!uploadedFile) {
+                document.getElementById('sendResult').textContent = 'Please upload an image first';
+                return;
+            }
+
+            const messageText = document.getElementById('messageText').value;
+
+            try {
+                document.getElementById('sendResult').textContent = 'Sending message with image to Healthcare Inc group...';
+                
+                const messageData = {
+                    content: messageText,
+                    attachments: [uploadedFile]
+                };
+
+                const response = await fetch(`/api/conversations/${healthcareConvId}/messages`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(messageData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    document.getElementById('sendResult').textContent = 
+                        `✅ SUCCESS! Image sent to Healthcare Inc Test Group!\n` +
+                        `Message ID: ${result.id}\n` +
+                        `Content: "${messageText}"\n` +
+                        `Attachment: ${uploadedFile.name}\n` +
+                        `Conversation: Healthcare Inc Test Group`;
+                } else {
+                    const error = await response.text();
+                    throw new Error(`Send failed: ${error}`);
+                }
+            } catch (error) {
+                document.getElementById('sendResult').textContent = `❌ Send failed: ${error.message}`;
+            }
+        }
+
+        // Auto-start authentication
+        window.onload = function() {
+            setTimeout(authenticate, 500);
+        };
+    </script>
+</body>
+</html>

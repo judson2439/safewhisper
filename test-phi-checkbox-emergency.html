@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emergency PHI Checkbox Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .checkbox-item { margin: 10px 0; padding: 10px; border: 2px solid #ccc; }
+        input[type="checkbox"] { margin-right: 10px; transform: scale(1.5); }
+        .results { background: #f0f8ff; padding: 15px; margin: 20px 0; font-family: monospace; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🚨 Emergency PHI Checkbox Test</h1>
+    <p>Testing if checkbox selection works at all:</p>
+    
+    <div class="checkbox-item">
+        <input type="checkbox" id="test1" onchange="updateResults()">
+        <label for="test1">Insurance Card</label>
+    </div>
+    
+    <div class="checkbox-item">
+        <input type="checkbox" id="test2" onchange="updateResults()">
+        <label for="test2">Patient Name</label>
+    </div>
+    
+    <div class="checkbox-item">
+        <input type="checkbox" id="test3" onchange="updateResults()">
+        <label for="test3">Medical Records</label>
+    </div>
+    
+    <button onclick="testSubmit()">Test Submit</button>
+    <button onclick="resetAll()">Reset All</button>
+    
+    <div class="results" id="results">
+        Click checkboxes to test selection...
+    </div>
+    
+    <script>
+        let selectedTypes = [];
+        
+        function updateResults() {
+            selectedTypes = [];
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                selectedTypes.push(cb.id);
+            });
+            
+            document.getElementById('results').textContent = 
+                `Selected: [${selectedTypes.join(', ')}] - Count: ${selectedTypes.length}`;
+            
+            console.log('Emergency test - Selected types:', selectedTypes);
+        }
+        
+        function testSubmit() {
+            if (selectedTypes.length === 0) {
+                alert('❌ CRITICAL: No PHI types selected - message would be blocked!');
+            } else {
+                alert('✅ SUCCESS: ' + selectedTypes.length + ' PHI types selected: ' + selectedTypes.join(', '));
+            }
+        }
+        
+        function resetAll() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            updateResults();
+        }
+        
+        updateResults();
+    </script>
+</body>
+</html>
