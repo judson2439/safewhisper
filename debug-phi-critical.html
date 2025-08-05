@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Critical PHI Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug { background: #f0f0f0; padding: 10px; margin: 10px 0; font-family: monospace; }
+        .error { background: #ffebee; }
+        .success { background: #e8f5e9; }
+        button { padding: 10px 20px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🚨 Critical PHI Debug Test</h1>
+    
+    <div class="debug">
+        <h3>Step 1: Test React State Management</h3>
+        <input type="text" id="testInput" placeholder="Type something..." onchange="testStateChange()">
+        <div id="testResult">No input yet</div>
+    </div>
+
+    <div class="debug">
+        <h3>Step 2: Simulated PHI Type Selection</h3>
+        <input type="checkbox" id="phi1" onchange="updatePhiState()"> Insurance Card<br>
+        <input type="checkbox" id="phi2" onchange="updatePhiState()"> Patient Name<br>
+        <input type="checkbox" id="phi3" onchange="updatePhiState()"> Medical Records<br>
+        <div id="phiState">Selected PHI Types: []</div>
+    </div>
+
+    <div class="debug">
+        <h3>Step 3: Send Button Test</h3>
+        <button onclick="simulateSend()">🚨 Test Send</button>
+        <div id="sendResult">Ready to test...</div>
+    </div>
+
+    <script>
+        let selectedPHITypes = [];
+        
+        function testStateChange() {
+            const input = document.getElementById('testInput').value;
+            document.getElementById('testResult').textContent = 'Input captured: ' + input;
+            console.log('Test input:', input);
+        }
+        
+        function updatePhiState() {
+            selectedPHITypes = [];
+            const checkboxes = document.querySelectorAll('#phi1, #phi2, #phi3');
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    selectedPHITypes.push(cb.id);
+                }
+            });
+            
+            document.getElementById('phiState').textContent = 
+                'Selected PHI Types: [' + selectedPHITypes.join(', ') + '] Length: ' + selectedPHITypes.length;
+            console.log('PHI State updated:', selectedPHITypes);
+        }
+        
+        function simulateSend() {
+            console.log('🚨 SIMULATE SEND - selectedPHITypes:', selectedPHITypes);
+            console.log('🚨 SIMULATE SEND - length:', selectedPHITypes.length);
+            
+            const result = document.getElementById('sendResult');
+            
+            if (selectedPHITypes.length === 0) {
+                result.textContent = '❌ FAIL: No PHI types selected';
+                result.className = 'error';
+                console.log('❌ Send would fail - no PHI types');
+            } else {
+                result.textContent = '✅ SUCCESS: Would send with PHI types: ' + selectedPHITypes.join(', ');
+                result.className = 'success';
+                console.log('✅ Send would succeed with PHI types:', selectedPHITypes);
+            }
+        }
+    </script>
+</body>
+</html>
