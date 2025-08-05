@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Upload Issue</title>
+    <script src="https://releases.transloadit.com/uppy/v3.23.0/uppy.min.js"></script>
+    <link href="https://releases.transloadit.com/uppy/v3.23.0/uppy.min.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Debug Upload Issue</h1>
+    
+    <div>
+        <h2>Test 1: Simple File Input</h2>
+        <input type="file" id="simpleFile" accept="image/*">
+        <button onclick="testSimpleUpload()">Test Simple Upload</button>
+        <div id="simpleResult"></div>
+    </div>
+    
+    <div>
+        <h2>Test 2: Uppy Dashboard</h2>
+        <div id="uppy-dashboard"></div>
+        <div id="uppyResult"></div>
+    </div>
+
+    <script>
+        // Test 1: Simple upload
+        async function testSimpleUpload() {
+            const fileInput = document.getElementById('simpleFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+            
+            console.log('Testing simple upload with file:', file.name, file.type, file.size);
+            
+            try {
+                // Login first
+                const loginResponse = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username: 'mickey_mouse', password: 'password123' })
+                });
+                
+                if (!loginResponse.ok) {
+                    throw new Error('Login failed');
+                }
+                
+                console.log('Login successful, getting upload URL...');
+                
+                // Get upload URL
+                const uploadUrlResponse = await fetch('/api/attachments/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        fileName: file.name,
+                        contentType: file.type,
+                        size: file.size
+                    })
+                });
+                
+                if (!uploadUrlResponse.ok) {
+                    const errorText = await uploadUrlResponse.text();
+                    throw new Error(`Upload URL failed: ${uploadUrlResponse.status} - ${errorText}`);
+                }
+                
+                const { uploadURL } = await uploadUrlResponse.json();
+                console.log('Got upload URL:', uploadURL);
+                
+                // Upload file
+                const uploadResponse = await fetch(uploadURL, {
+                    method: 'PUT',
+                    body: file,
+                    headers: {
+                        'Content-Type': file.type
+                    }
+                });
+                
+                if (!uploadResponse.ok) {
+                    throw new Error(`Upload failed: ${uploadResponse.status}`);
+                }
+                
+                console.log('Upload successful!');
+                document.getElementById('simpleResult').innerHTML = 
+                    `✓ Simple upload successful! URL: ${uploadURL}`;
+                
+            } catch (error) {
+                console.error('Simple upload error:', error);
+                document.getElementById('simpleResult').innerHTML = 
+                    `✗ Simple upload failed: ${error.message}`;
+            }
+        }
+        
+        // Test 2: Uppy Dashboard
+        const uppy = new Uppy.Core({
+            restrictions: {
+                maxNumberOfFiles: 1,
+                maxFileSize: 50 * 1024 * 1024,
+                allowedFileTypes: ['image/*']
+            },
+            debug: true
+        })
+        .use(Uppy.Dashboard, {
+            target: '#uppy-dashboard',
+            inline: true,
+            height: 300,
+            showProgressDetails: true
+        })
+        .use(Uppy.AwsS3, {
+            shouldUseMultipart: false,
+            getUploadParameters: async (file) => {
+                console.log('Uppy: Getting upload parameters for:', file.name);
+                
+                // Login first
+                const loginResponse = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username: 'mickey_mouse', password: 'password123' })
+                });
+                
+                if (!loginResponse.ok) {
+                    throw new Error('Login failed');
+                }
+                
+                // Get upload URL
+                const response = await fetch('/api/attachments/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        fileName: file.name,
+                        contentType: file.type,
+                        size: file.size
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to get upload URL: ${response.status}`);
+                }
+                
+                const { uploadURL } = await response.json();
+                console.log('Uppy: Got upload URL:', uploadURL);
+                
+                return {
+                    method: 'PUT',
+                    url: uploadURL
+                };
+            }
+        })
+        .on('complete', (result) => {
+            console.log('Uppy upload complete:', result);
+            if (result.successful && result.successful.length > 0) {
+                document.getElementById('uppyResult').innerHTML = 
+                    `✓ Uppy upload successful! Files: ${result.successful.length}`;
+            } else {
+                document.getElementById('uppyResult').innerHTML = 
+                    '✗ Uppy upload failed';
+            }
+        })
+        .on('upload-error', (file, error) => {
+            console.error('Uppy upload error:', error);
+            document.getElementById('uppyResult').innerHTML = 
+                `✗ Uppy upload error: ${error.message}`;
+        })
+        .on('file-added', (file) => {
+            console.log('Uppy: File added:', file.name, file.type, file.size);
+        });
+    </script>
+</body>
+</html>

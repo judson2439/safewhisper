@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test File Upload</title>
+    <script src="https://releases.transloadit.com/uppy/v3.24.0/uppy.min.js"></script>
+    <link href="https://releases.transloadit.com/uppy/v3.24.0/uppy.min.css" rel="stylesheet">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        #auth-status { margin: 20px 0; padding: 10px; background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Test File Upload System</h1>
+    
+    <div id="auth-status">Checking authentication...</div>
+    
+    <div class="test-section">
+        <h2>1. Test Authentication</h2>
+        <button onclick="checkAuth()">Check Auth Status</button>
+        <div id="auth-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Test Upload URL Generation</h2>
+        <button onclick="testUploadURL()">Get Upload URL</button>
+        <div id="upload-url-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Test Uppy File Upload</h2>
+        <div id="uppy-dashboard"></div>
+        <div id="upload-result"></div>
+    </div>
+
+    <script>
+        // Check authentication on page load
+        window.onload = async function() {
+            await checkAuth();
+            initUppy();
+        };
+
+        async function checkAuth() {
+            console.log('Checking authentication...');
+            try {
+                const response = await fetch('/api/auth/user', {
+                    credentials: 'include'
+                });
+                
+                const authStatus = document.getElementById('auth-status');
+                const authResult = document.getElementById('auth-result');
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    authStatus.innerHTML = `✅ Authenticated as: ${user.username || user.email || user.id}`;
+                    authResult.innerHTML = `<pre>${JSON.stringify(user, null, 2)}</pre>`;
+                } else {
+                    const error = await response.text();
+                    authStatus.innerHTML = `❌ Not authenticated: ${error}`;
+                    authResult.innerHTML = `Status: ${response.status}, Error: ${error}`;
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                document.getElementById('auth-status').innerHTML = `❌ Auth check failed: ${error.message}`;
+            }
+        }
+
+        async function testUploadURL() {
+            console.log('Testing upload URL generation...');
+            try {
+                const response = await fetch('/api/attachments/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        fileName: 'test-image.png',
+                        contentType: 'image/png',
+                        size: 1000
+                    })
+                });
+
+                const result = document.getElementById('upload-url-result');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    result.innerHTML = `✅ Upload URL generated:<br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    const error = await response.text();
+                    result.innerHTML = `❌ Upload URL failed: ${response.status} - ${error}`;
+                }
+            } catch (error) {
+                console.error('Upload URL test error:', error);
+                document.getElementById('upload-url-result').innerHTML = `❌ Error: ${error.message}`;
+            }
+        }
+
+        function initUppy() {
+            console.log('Initializing Uppy...');
+            
+            const uppy = new Uppy.Core({
+                restrictions: {
+                    maxNumberOfFiles: 5,
+                    maxFileSize: 50 * 1024 * 1024, // 50MB
+                    allowedFileTypes: ['image/*', '.pdf', '.doc', '.docx']
+                },
+                autoProceed: false,
+                debug: true
+            })
+            .use(Uppy.Dashboard, {
+                target: '#uppy-dashboard',
+                inline: true,
+                height: 300,
+                proudlyDisplayPoweredByUppy: false
+            })
+            .use(Uppy.AwsS3, {
+                shouldUseMultipart: false,
+                getUploadParameters: async (file) => {
+                    console.log('Getting upload parameters for:', file.name, file.type, file.size);
+                    
+                    // Check auth first
+                    const authCheck = await fetch('/api/auth/user', {
+                        credentials: 'include'
+                    });
+                    console.log('Auth check status:', authCheck.status);
+                    
+                    if (!authCheck.ok) {
+                        throw new Error('Not authenticated for file upload');
+                    }
+                    
+                    // Get upload URL
+                    const response = await fetch('/api/attachments/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({
+                            fileName: file.name,
+                            contentType: file.type,
+                            size: file.size
+                        })
+                    });
+                    
+                    console.log('Upload URL response status:', response.status);
+                    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Upload URL failed:', response.status, errorText);
+                        throw new Error(`Failed to get upload URL: ${response.status} ${errorText}`);
+                    }
+                    
+                    const { uploadURL } = await response.json();
+                    console.log('Received upload URL:', uploadURL);
+                    
+                    return {
+                        method: 'PUT',
+                        url: uploadURL
+                    };
+                }
+            })
+            .on('complete', (result) => {
+                console.log('Upload complete:', result);
+                const resultDiv = document.getElementById('upload-result');
+                
+                if (result.successful && result.successful.length > 0) {
+                    resultDiv.innerHTML = `✅ ${result.successful.length} file(s) uploaded successfully:<br><pre>${JSON.stringify(result.successful, null, 2)}</pre>`;
+                } else {
+                    resultDiv.innerHTML = `❌ No files uploaded successfully`;
+                }
+                
+                if (result.failed && result.failed.length > 0) {
+                    resultDiv.innerHTML += `<br>❌ ${result.failed.length} file(s) failed:<br><pre>${JSON.stringify(result.failed, null, 2)}</pre>`;
+                }
+            })
+            .on('upload-error', (file, error) => {
+                console.error('Upload error:', file?.name, error);
+                const resultDiv = document.getElementById('upload-result');
+                resultDiv.innerHTML = `❌ Upload error for ${file?.name}: ${JSON.stringify(error, null, 2)}`;
+            });
+        }
+    </script>
+</body>
+</html>

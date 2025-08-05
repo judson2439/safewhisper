@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug PHI and Files</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .checkbox-container { margin: 10px 0; }
+        input[type="checkbox"] { margin-right: 10px; }
+        button { margin: 10px 5px; padding: 10px 20px; }
+        .results { background: #f5f5f5; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Debug PHI Checkboxes and File Access</h1>
+    
+    <div class="section">
+        <h2>1. Test PHI Checkbox Behavior</h2>
+        <div class="checkbox-container">
+            <input type="checkbox" id="test-patient" onchange="handleCheckboxChange('patient_name', this.checked)">
+            <label for="test-patient">Patient Name</label>
+        </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="test-medical" onchange="handleCheckboxChange('medical_record', this.checked)">
+            <label for="test-medical">Medical Record</label>
+        </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="test-diagnosis" onchange="handleCheckboxChange('diagnosis', this.checked)">
+            <label for="test-diagnosis">Diagnosis</label>
+        </div>
+        <div class="results" id="checkbox-results">Selected PHI Types: None</div>
+    </div>
+    
+    <div class="section">
+        <h2>2. Test File Access</h2>
+        <button onclick="testFileAccess('file-1754270382268-0')">Test File 1 (from logs)</button>
+        <button onclick="testFileAccess('uppy-blank/group/chat/middle/image/png-10-10-10-10-1e-image/png-11679-1754092535569')">Test File 2 (from logs)</button>
+        <div class="results" id="file-results">Click buttons to test file access</div>
+    </div>
+
+    <div class="section">
+        <h2>3. Test Authentication</h2>
+        <button onclick="testAuth()">Check Authentication Status</button>
+        <div class="results" id="auth-results">Click to check auth</div>
+    </div>
+    
+    <script>
+        let selectedPHITypes = [];
+        
+        function handleCheckboxChange(phiType, checked) {
+            console.log('Checkbox change:', phiType, checked);
+            
+            if (checked && !selectedPHITypes.includes(phiType)) {
+                selectedPHITypes.push(phiType);
+            } else if (!checked && selectedPHITypes.includes(phiType)) {
+                selectedPHITypes = selectedPHITypes.filter(type => type !== phiType);
+            }
+            
+            document.getElementById('checkbox-results').textContent = 
+                'Selected PHI Types: ' + (selectedPHITypes.length > 0 ? selectedPHITypes.join(', ') : 'None');
+            
+            console.log('Current selected PHI types:', selectedPHITypes);
+        }
+        
+        async function testFileAccess(attachmentId) {
+            const resultsDiv = document.getElementById('file-results');
+            resultsDiv.innerHTML = 'Testing file access for: ' + attachmentId;
+            console.log('Testing file access for attachment:', attachmentId);
+            
+            try {
+                const url = `/api/attachments/serve/${encodeURIComponent(attachmentId)}`;
+                console.log('Testing URL:', url);
+                
+                const response = await fetch(url, {
+                    credentials: 'include'
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', Object.fromEntries(response.headers));
+                
+                if (response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    resultsDiv.innerHTML = `✅ File access successful! Content-Type: ${contentType}`;
+                    
+                    // If it's an image, try to display it
+                    if (contentType && contentType.startsWith('image/')) {
+                        const blob = await response.blob();
+                        const imageUrl = URL.createObjectURL(blob);
+                        const img = document.createElement('img');
+                        img.src = imageUrl;
+                        img.style.maxWidth = '300px';
+                        img.style.marginTop = '10px';
+                        resultsDiv.appendChild(img);
+                    }
+                } else {
+                    const errorText = await response.text();
+                    resultsDiv.innerHTML = `❌ Error ${response.status}: ${errorText}`;
+                }
+            } catch (error) {
+                console.error('File access error:', error);
+                resultsDiv.innerHTML = `❌ Exception: ${error.message}`;
+            }
+        }
+        
+        async function testAuth() {
+            const resultsDiv = document.getElementById('auth-results');
+            resultsDiv.innerHTML = 'Checking authentication...';
+            
+            try {
+                const response = await fetch('/api/auth/user', {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    resultsDiv.innerHTML = `✅ Authenticated as: ${user.username} (${user.id})`;
+                } else {
+                    resultsDiv.innerHTML = `❌ Not authenticated (${response.status})`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `❌ Auth check failed: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
